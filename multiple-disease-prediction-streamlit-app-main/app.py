@@ -17,9 +17,9 @@ heart_disease_model = pickle.load(open(f'{working_dir}/saved_models/heart_diseas
 parkinsons_model = pickle.load(open(f'{working_dir}/saved_models/parkinsons_model.sav', 'rb'))
 
 # Load the training data (assuming training data is stored in CSV files)
-diabetes_training_data = pd.read_csv(f'{working_dir}/saved_models/diabetes_training_data.csv')
-heart_training_data = pd.read_csv(f'{working_dir}/saved_models/heart_training_data.csv')
-parkinsons_training_data = pd.read_csv(f'{working_dir}/saved_models/parkinsons_training_data.csv')
+diabetes_training_data = pd.read_csv(f'{working_dir}/saved_models/diabetes.csv')
+heart_training_data = pd.read_csv(f'{working_dir}/saved_models/heart.csv')
+parkinsons_training_data = pd.read_csv(f'{working_dir}/saved_models/parkinsons.csv')
 
 # Accuracy (assuming stored in a text file or calculated separately)
 with open(f'{working_dir}/saved_models/diabetes_model_accuracy.txt', 'r') as f:
