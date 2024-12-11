@@ -18,7 +18,7 @@ parkinsons_model = pickle.load(open(f'{working_dir}/saved_models/parkinsons_mode
 
 # Load the training data (assuming training data is stored in CSV files)
 diabetes_training_data = pd.read_csv(f'{working_dir}/dataset/diabetes.csv')
-heart_training_data = pd.read_csv(f'{working_dir}/datasett/heart.csv')
+heart_training_data = pd.read_csv(f'{working_dir}/dataset/heart.csv')
 parkinsons_training_data = pd.read_csv(f'{working_dir}/dataset/parkinsons.csv')
 
 # Accuracy (assuming stored in a text file or calculated separately)
