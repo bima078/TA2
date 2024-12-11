@@ -12,18 +12,9 @@ st.set_page_config(page_title="Health Assistant",
 working_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Load the saved models
-def load_model_with_accuracy(filepath):
-    with open(filepath, 'rb') as file:
-        try:
-            model_data = pickle.load(file)
-            return model_data['model'], model_data.get('accuracy', 'N/A')
-        except (KeyError, TypeError):
-            st.warning(f"The model file {filepath} does not include accuracy. Ensure it is stored in the correct format.")
-            return pickle.load(file), 'N/A'
-
-diabetes_model, diabetes_accuracy = load_model_with_accuracy(f'{working_dir}/saved_models/diabetes_model.sav')
-heart_disease_model, heart_accuracy = load_model_with_accuracy(f'{working_dir}/saved_models/heart_disease_model.sav')
-parkinsons_model, parkinsons_accuracy = load_model_with_accuracy(f'{working_dir}/saved_models/parkinsons_model.sav')
+diabetes_model = pickle.load(open(f'{working_dir}/saved_models/diabetes_model.sav', 'rb'))
+heart_disease_model = pickle.load(open(f'{working_dir}/saved_models/heart_disease_model.sav', 'rb'))
+parkinsons_model = pickle.load(open(f'{working_dir}/saved_models/parkinsons_model.sav', 'rb'))
 
 # Sidebar for navigation
 with st.sidebar:
@@ -49,9 +40,6 @@ def download_template(columns, filename):
 # Diabetes Prediction Page
 if selected == 'Diabetes Prediction':
     st.title('Diabetes Prediction using SVM Method')
-
-    # Display accuracy
-    st.write(f"Model Accuracy: {diabetes_accuracy}%")
 
     # Add option for single or batch prediction
     prediction_type = st.radio("Select Prediction Type", ('Single Prediction', 'Batch Prediction'))
@@ -122,15 +110,197 @@ if selected == 'Diabetes Prediction':
 if selected == 'Heart Disease Prediction':
     st.title('Heart Disease Prediction using SVM Method')
 
-    # Display accuracy
-    st.write(f"Model Accuracy: {heart_accuracy}%")
+    prediction_type = st.radio("Select Prediction Type", ('Single Prediction', 'Batch Prediction'))
 
-    # Add logic similar to Diabetes Prediction Page
+    if prediction_type == 'Single Prediction':
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            age = st.text_input('Age')
+
+        with col2:
+            sex = st.text_input('Sex')
+
+        with col3:
+            cp = st.text_input('Chest Pain types')
+
+        with col1:
+            trestbps = st.text_input('Resting Blood Pressure')
+
+        with col2:
+            chol = st.text_input('Serum Cholestoral in mg/dl')
+
+        with col3:
+            fbs = st.text_input('Fasting Blood Sugar > 120 mg/dl')
+
+        with col1:
+            restecg = st.text_input('Resting Electrocardiographic results')
+
+        with col2:
+            thalach = st.text_input('Maximum Heart Rate achieved')
+
+        with col3:
+            exang = st.text_input('Exercise Induced Angina')
+
+        with col1:
+            oldpeak = st.text_input('ST depression induced by exercise')
+
+        with col2:
+            slope = st.text_input('Slope of the peak exercise ST segment')
+
+        with col3:
+            ca = st.text_input('Major vessels colored by flourosopy')
+
+        with col1:
+            thal = st.text_input('thal: 0 = normal; 1 = fixed defect; 2 = reversable defect')
+
+        # Prediction button
+        if st.button('Heart Disease Test Result'):
+            try:
+                user_input = [float(x) for x in [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]]
+                heart_prediction = heart_disease_model.predict([user_input])
+
+                if heart_prediction[0] == 1:
+                    st.success('The person is having heart disease')
+                else:
+                    st.success('The person does not have any heart disease')
+            except ValueError:
+                st.error("Please provide valid numerical inputs.")
+
+    elif prediction_type == 'Batch Prediction':
+        required_columns = ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
+        download_template(required_columns, "Heart Disease Prediction")
+
+        uploaded_file = st.file_uploader("Upload a CSV file for batch prediction", type=['csv'])
+
+        if uploaded_file is not None:
+            try:
+                data = pd.read_csv(uploaded_file)
+                st.write("Uploaded Data:", data.head())
+
+                # Ensure the data has the correct columns
+                if all(col in data.columns for col in required_columns):
+                    predictions = batch_predict(heart_disease_model, data[required_columns])
+                    data['Prediction'] = predictions
+                    st.write("Predictions:", data)
+                    st.download_button("Download Predictions", data.to_csv(index=False), "predictions.csv", "text/csv")
+                else:
+                    st.error(f"CSV file must contain the following columns: {', '.join(required_columns)}")
+            except Exception as e:
+                st.error(f"An error occurred: {str(e)}")
 
 if selected == 'Parkinsons Prediction':
     st.title("Parkinson's Disease Prediction using SVM Method")
 
-    # Display accuracy
-    st.write(f"Model Accuracy: {parkinsons_accuracy}%")
+    prediction_type = st.radio("Select Prediction Type", ('Single Prediction', 'Batch Prediction'))
 
-    # Add logic similar to Diabetes Prediction Page
+    if prediction_type == 'Single Prediction':
+        col1, col2, col3, col4, col5 = st.columns(5)
+
+        with col1:
+            fo = st.text_input('MDVP:Fo(Hz)')
+
+        with col2:
+            fhi = st.text_input('MDVP:Fhi(Hz)')
+
+        with col3:
+            flo = st.text_input('MDVP:Flo(Hz)')
+
+        with col4:
+            Jitter_percent = st.text_input('MDVP:Jitter(%)')
+
+        with col5:
+            Jitter_Abs = st.text_input('MDVP:Jitter(Abs)')
+
+        with col1:
+            RAP = st.text_input('MDVP:RAP')
+
+        with col2:
+            PPQ = st.text_input('MDVP:PPQ')
+
+        with col3:
+            DDP = st.text_input('Jitter:DDP')
+
+        with col4:
+            Shimmer = st.text_input('MDVP:Shimmer')
+
+        with col5:
+            Shimmer_dB = st.text_input('MDVP:Shimmer(dB)')
+
+        with col1:
+            APQ3 = st.text_input('Shimmer:APQ3')
+
+        with col2:
+            APQ5 = st.text_input('Shimmer:APQ5')
+
+        with col3:
+            APQ = st.text_input('MDVP:APQ')
+
+        with col4:
+            DDA = st.text_input('Shimmer:DDA')
+
+        with col5:
+            NHR = st.text_input('NHR')
+
+        with col1:
+            HNR = st.text_input('HNR')
+
+        with col2:
+            RPDE = st.text_input('RPDE')
+
+        with col3:
+            DFA = st.text_input('DFA')
+
+        with col4:
+            spread1 = st.text_input('spread1')
+
+        with col5:
+            spread2 = st.text_input('spread2')
+
+        with col1:
+            D2 = st.text_input('D2')
+
+        with col2:
+            PPE = st.text_input('PPE')
+
+        # Prediction button
+        if st.button("Parkinson's Test Result"):
+            try:
+                user_input = [float(x) for x in [fo, fhi, flo, Jitter_percent, Jitter_Abs,
+                                                 RAP, PPQ, DDP, Shimmer, Shimmer_dB, APQ3,
+                                                 APQ5, APQ, DDA, NHR, HNR, RPDE, DFA, spread1,
+                                                 spread2, D2, PPE]]
+                parkinsons_prediction = parkinsons_model.predict([user_input])
+
+                if parkinsons_prediction[0] == 1:
+                    st.success("The person has Parkinson's disease")
+                else:
+                    st.success("The person does not have Parkinson's disease")
+            except ValueError:
+                st.error("Please provide valid numerical inputs.")
+
+    elif prediction_type == 'Batch Prediction':
+        required_columns = ['MDVP:Fo(Hz)', 'MDVP:Fhi(Hz)', 'MDVP:Flo(Hz)', 'MDVP:Jitter(%)', 
+                            'MDVP:Jitter(Abs)', 'MDVP:RAP', 'MDVP:PPQ', 'Jitter:DDP', 
+                            'MDVP:Shimmer', 'MDVP:Shimmer(dB)', 'Shimmer:APQ3', 'Shimmer:APQ5', 
+                            'MDVP:APQ', 'Shimmer:DDA', 'NHR', 'HNR', 'RPDE', 'DFA', 
+                            'spread1', 'spread2', 'D2', 'PPE']
+        download_template(required_columns, "Parkinsons Prediction")
+
+        uploaded_file = st.file_uploader("Upload a CSV file for batch prediction", type=['csv'])
+
+        if uploaded_file is not None:
+            try:
+                data = pd.read_csv(uploaded_file)
+                st.write("Uploaded Data:", data.head())
+
+                # Ensure the data has the correct columns
+                if all(col in data.columns for col in required_columns):
+                    predictions = batch_predict(parkinsons_model, data[required_columns])
+                    data['Prediction'] = predictions
+                    st.write("Predictions:", data)
+                    st.download_button("Download Predictions", data.to_csv(index=False), "predictions.csv", "text/csv")
+                else:
+                    st.error(f"CSV file must contain the following columns: {', '.join(required_columns)}")
+            except Exception as e:
+                st.error(f"An error occurred: {str(e)}")
