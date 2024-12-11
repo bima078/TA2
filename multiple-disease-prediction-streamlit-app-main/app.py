@@ -117,7 +117,7 @@ if selected == 'Diabetes Prediction':
             except Exception as e:
                 st.error(f"An error occurred: {str(e)}")
 
-# Repeat similar logic for Heart Disease and Parkinson's Prediction Pages
+# Heart Disease Prediction Page
 if selected == 'Heart Disease Prediction':
     st.title('Heart Disease Prediction using SVM Method')
 
@@ -284,30 +284,18 @@ if selected == 'Parkinsons Prediction':
         # Prediction button
         if st.button("Parkinson's Test Result"):
             try:
-                user_input = [
-                    float(x) for x in [
-                        MDVP_Fo, MDVP_Fhi, MDVP_Flo, MDVP_Jitter_percent, MDVP_Jitter_Abs,
-                        MDVP_RAP, MDVP_PPQ, Jitter_DDP, MDVP_Shimmer, MDVP_Shimmer_dB,
-                        Shimmer_APQ3, Shimmer_APQ5, MDVP_APQ, Shimmer_DDA, NHR, HNR,
-                        RPDE, DFA, spread1, spread2, D2, PPE
-                    ]
-                ]
+                user_input = [float(x) for x in [MDVP_Fo, MDVP_Fhi, MDVP_Flo, MDVP_Jitter_percent, MDVP_Jitter_Abs, MDVP_RAP, MDVP_PPQ, Jitter_DDP, MDVP_Shimmer, MDVP_Shimmer_dB, Shimmer_APQ3, Shimmer_APQ5, MDVP_APQ, Shimmer_DDA, NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE]]
                 parkinsons_prediction = parkinsons_model.predict([user_input])
 
                 if parkinsons_prediction[0] == 1:
-                    st.success("The person is likely to have Parkinson's disease")
+                    st.success("The person has Parkinson's disease")
                 else:
-                    st.success("The person is not likely to have Parkinson's disease")
+                    st.success("The person does not have Parkinson's disease")
             except ValueError:
                 st.error("Please provide valid numerical inputs.")
 
     elif prediction_type == 'Batch Prediction':
-        required_columns = [
-            'MDVP:Fo (Hz)', 'MDVP:Fhi (Hz)', 'MDVP:Flo (Hz)', 'MDVP:Jitter (%)', 'MDVP:Jitter (Abs)',
-            'MDVP:RAP', 'MDVP:PPQ', 'Jitter:DDP', 'MDVP:Shimmer', 'MDVP:Shimmer (dB)',
-            'Shimmer:APQ3', 'Shimmer:APQ5', 'MDVP:APQ', 'Shimmer:DDA', 'NHR', 'HNR',
-            'RPDE', 'DFA', 'Spread1', 'Spread2', 'D2', 'PPE'
-        ]
+        required_columns = ['MDVP:Fo (Hz)', 'MDVP:Fhi (Hz)', 'MDVP:Flo (Hz)', 'MDVP:Jitter (%)', 'MDVP:Jitter (Abs)', 'MDVP:RAP', 'MDVP:PPQ', 'Jitter:DDP', 'MDVP:Shimmer', 'MDVP:Shimmer (dB)', 'Shimmer:APQ3', 'Shimmer:APQ5', 'MDVP:APQ', 'Shimmer:DDA', 'NHR', 'HNR', 'RPDE', 'DFA', 'Spread1', 'Spread2', 'D2', 'PPE']
         download_template(required_columns, "Parkinson's Prediction")
 
         uploaded_file = st.file_uploader("Upload a CSV file for batch prediction", type=['csv'])
