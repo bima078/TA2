@@ -12,24 +12,14 @@ st.set_page_config(page_title="Health Assistant",
 working_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Load the saved models
-diabetes_model = pickle.load(open(f'{working_dir}/saved_models/diabetes_model.sav', 'rb'))
-heart_disease_model = pickle.load(open(f'{working_dir}/saved_models/heart_disease_model.sav', 'rb'))
-parkinsons_model = pickle.load(open(f'{working_dir}/saved_models/parkinsons_model.sav', 'rb'))
+def load_model_with_accuracy(filepath):
+    with open(filepath, 'rb') as file:
+        model_data = pickle.load(file)
+    return model_data['model'], model_data['accuracy']
 
-# Load the training data (assuming training data is stored in CSV files)
-diabetes_training_data = pd.read_csv(f'{working_dir}/dataset/diabetes.csv')
-heart_training_data = pd.read_csv(f'{working_dir}/dataset/heart.csv')
-parkinsons_training_data = pd.read_csv(f'{working_dir}/dataset/parkinsons.csv')
-
-# Accuracy (assuming stored in a text file or calculated separately)
-with open(f'{working_dir}/saved_models/diabetes_model_accuracy.txt', 'r') as f:
-    diabetes_accuracy = f.read().strip()
-
-with open(f'{working_dir}/saved_models/heart_model_accuracy.txt', 'r') as f:
-    heart_accuracy = f.read().strip()
-
-with open(f'{working_dir}/saved_models/parkinsons_model_accuracy.txt', 'r') as f:
-    parkinsons_accuracy = f.read().strip()
+diabetes_model, diabetes_accuracy = load_model_with_accuracy(f'{working_dir}/saved_models/diabetes_model.sav')
+heart_disease_model, heart_accuracy = load_model_with_accuracy(f'{working_dir}/saved_models/heart_disease_model.sav')
+parkinsons_model, parkinsons_accuracy = load_model_with_accuracy(f'{working_dir}/saved_models/parkinsons_model.sav')
 
 # Sidebar for navigation
 with st.sidebar:
@@ -124,9 +114,6 @@ if selected == 'Diabetes Prediction':
             except Exception as e:
                 st.error(f"An error occurred: {str(e)}")
 
-    # Download training data
-    st.download_button("Download Training Data", diabetes_training_data.to_csv(index=False), "diabetes_training_data.csv", "text/csv")
-
 # Repeat similar logic for Heart Disease and Parkinson's Prediction Pages
 if selected == 'Heart Disease Prediction':
     st.title('Heart Disease Prediction using SVM Method')
@@ -135,7 +122,6 @@ if selected == 'Heart Disease Prediction':
     st.write(f"Model Accuracy: {heart_accuracy}%")
 
     # Add logic similar to Diabetes Prediction Page
-    st.download_button("Download Training Data", heart_training_data.to_csv(index=False), "heart_training_data.csv", "text/csv")
 
 if selected == 'Parkinsons Prediction':
     st.title("Parkinson's Disease Prediction using SVM Method")
@@ -144,4 +130,3 @@ if selected == 'Parkinsons Prediction':
     st.write(f"Model Accuracy: {parkinsons_accuracy}%")
 
     # Add logic similar to Diabetes Prediction Page
-    st.download_button("Download Training Data", parkinsons_training_data.to_csv(index=False), "parkinsons_training_data.csv", "text/csv")
