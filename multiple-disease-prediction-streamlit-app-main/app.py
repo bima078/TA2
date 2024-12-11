@@ -31,6 +31,12 @@ def batch_predict(model, input_df):
     predictions = model.predict(input_df)
     return ["Positive" if pred == 1 else "Negative" for pred in predictions]
 
+# Function to download template
+def download_template(columns, filename):
+    template = pd.DataFrame(columns=columns)
+    csv = template.to_csv(index=False)
+    st.download_button(f"Download {filename} Template", csv, f"{filename}.csv", "text/csv")
+
 # Diabetes Prediction Page
 if selected == 'Diabetes Prediction':
     st.title('Diabetes Prediction using SVM Method')
@@ -79,6 +85,9 @@ if selected == 'Diabetes Prediction':
                 st.error("Please provide valid numerical inputs.")
 
     elif prediction_type == 'Batch Prediction':
+        required_columns = ['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age']
+        download_template(required_columns, "Diabetes Prediction")
+
         uploaded_file = st.file_uploader("Upload a CSV file for batch prediction", type=['csv'])
 
         if uploaded_file is not None:
@@ -87,7 +96,6 @@ if selected == 'Diabetes Prediction':
                 st.write("Uploaded Data:", data.head())
 
                 # Ensure the data has the correct columns
-                required_columns = ['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age']
                 if all(col in data.columns for col in required_columns):
                     predictions = batch_predict(diabetes_model, data[required_columns])
                     data['Prediction'] = predictions
