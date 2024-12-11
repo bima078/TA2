@@ -14,8 +14,12 @@ working_dir = os.path.dirname(os.path.abspath(__file__))
 # Load the saved models
 def load_model_with_accuracy(filepath):
     with open(filepath, 'rb') as file:
-        model_data = pickle.load(file)
-    return model_data['model'], model_data['accuracy']
+        try:
+            model_data = pickle.load(file)
+            return model_data['model'], model_data.get('accuracy', 'N/A')
+        except (KeyError, TypeError):
+            st.warning(f"The model file {filepath} does not include accuracy. Ensure it is stored in the correct format.")
+            return pickle.load(file), 'N/A'
 
 diabetes_model, diabetes_accuracy = load_model_with_accuracy(f'{working_dir}/saved_models/diabetes_model.sav')
 heart_disease_model, heart_accuracy = load_model_with_accuracy(f'{working_dir}/saved_models/heart_disease_model.sav')
