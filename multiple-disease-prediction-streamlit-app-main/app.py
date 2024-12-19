@@ -45,6 +45,11 @@ def download_training_data(file_path, display_name):
     else:
         st.error(f"Training dataset for {display_name} not found.")
 
+# Function to display and download predictions
+def display_and_download_predictions(data, predictions_column="Prediction"):
+    st.write("Predictions:", data)
+    st.download_button("Download Predictions", data.to_csv(index=False), "predictions.csv", "text/csv")
+
 # Diabetes Prediction Page
 if selected == 'Diabetes Prediction':
     st.title('Diabetes Prediction using SVM Method')
@@ -88,10 +93,16 @@ if selected == 'Diabetes Prediction':
                 user_input = [float(x) for x in [Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age]]
                 diab_prediction = diabetes_model.predict([user_input])
 
-                if diab_prediction[0] == 1:
-                    st.success('The person is diabetic')
-                else:
-                    st.success('The person is not diabetic')
+                result = 'Positive' if diab_prediction[0] == 1 else 'Negative'
+                st.success(f'The person is {result} for diabetes.')
+
+                # Display result in a table
+                result_df = pd.DataFrame({
+                    'Feature': ['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age'],
+                    'Value': user_input,
+                    'Prediction': [result] * len(user_input)
+                })
+                display_and_download_predictions(result_df)
             except ValueError:
                 st.error("Please provide valid numerical inputs.")
 
@@ -110,8 +121,7 @@ if selected == 'Diabetes Prediction':
                 if all(col in data.columns for col in required_columns):
                     predictions = batch_predict(diabetes_model, data[required_columns])
                     data['Prediction'] = predictions
-                    st.write("Predictions:", data)
-                    st.download_button("Download Predictions", data.to_csv(index=False), "predictions.csv", "text/csv")
+                    display_and_download_predictions(data)
                 else:
                     st.error(f"CSV file must contain the following columns: {', '.join(required_columns)}")
             except Exception as e:
@@ -124,6 +134,7 @@ if selected == 'Heart Disease Prediction':
     # Download training data
     download_training_data(f'{working_dir}/dataset/heart.csv', 'Heart Disease Training Data')
 
+    # Add option for single or batch prediction
     prediction_type = st.radio("Select Prediction Type", ('Single Prediction', 'Batch Prediction'))
 
     if prediction_type == 'Single Prediction':
@@ -174,10 +185,16 @@ if selected == 'Heart Disease Prediction':
                 user_input = [float(x) for x in [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]]
                 heart_prediction = heart_disease_model.predict([user_input])
 
-                if heart_prediction[0] == 1:
-                    st.success('The person is having heart disease')
-                else:
-                    st.success('The person does not have any heart disease')
+                result = 'Positive' if heart_prediction[0] == 1 else 'Negative'
+                st.success(f'The person is {result} for heart disease.')
+
+                # Display result in a table
+                result_df = pd.DataFrame({
+                    'Feature': ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal'],
+                    'Value': user_input,
+                    'Prediction': [result] * len(user_input)
+                })
+                display_and_download_predictions(result_df)
             except ValueError:
                 st.error("Please provide valid numerical inputs.")
 
@@ -196,107 +213,86 @@ if selected == 'Heart Disease Prediction':
                 if all(col in data.columns for col in required_columns):
                     predictions = batch_predict(heart_disease_model, data[required_columns])
                     data['Prediction'] = predictions
-                    st.write("Predictions:", data)
-                    st.download_button("Download Predictions", data.to_csv(index=False), "predictions.csv", "text/csv")
+                    display_and_download_predictions(data)
                 else:
                     st.error(f"CSV file must contain the following columns: {', '.join(required_columns)}")
             except Exception as e:
                 st.error(f"An error occurred: {str(e)}")
 
-# Parkinson's Prediction Page
+# Parkinson's Disease Prediction Page
 if selected == 'Parkinsons Prediction':
     st.title("Parkinson's Disease Prediction using SVM Method")
 
     # Download training data
     download_training_data(f'{working_dir}/dataset/parkinsons.csv', "Parkinson's Training Data")
 
+    # Add option for single or batch prediction
     prediction_type = st.radio("Select Prediction Type", ('Single Prediction', 'Batch Prediction'))
 
     if prediction_type == 'Single Prediction':
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            MDVP_Fo = st.text_input('MDVP:Fo (Hz)')
+            MDVP_Fo = st.text_input("MDVP:Fo(Hz) - Average vocal fundamental frequency")
 
         with col2:
-            MDVP_Fhi = st.text_input('MDVP:Fhi (Hz)')
+            MDVP_Fhi = st.text_input("MDVP:Fhi(Hz) - Maximum vocal fundamental frequency")
 
         with col3:
-            MDVP_Flo = st.text_input('MDVP:Flo (Hz)')
+            MDVP_Flo = st.text_input("MDVP:Flo(Hz) - Minimum vocal fundamental frequency")
 
         with col1:
-            MDVP_Jitter_percent = st.text_input('MDVP:Jitter (%)')
+            MDVP_Jitter = st.text_input("MDVP:Jitter(%)")
 
         with col2:
-            MDVP_Jitter_Abs = st.text_input('MDVP:Jitter (Abs)')
+            MDVP_Shimmer = st.text_input("MDVP:Shimmer")
 
         with col3:
-            MDVP_RAP = st.text_input('MDVP:RAP')
+            NHR = st.text_input("NHR - Noise-to-Harmonics ratio")
 
         with col1:
-            MDVP_PPQ = st.text_input('MDVP:PPQ')
+            HNR = st.text_input("HNR - Harmonics-to-Noise ratio")
 
         with col2:
-            Jitter_DDP = st.text_input('Jitter:DDP')
+            RPDE = st.text_input("RPDE - Recurrence period density entropy")
 
         with col3:
-            MDVP_Shimmer = st.text_input('MDVP:Shimmer')
+            DFA = st.text_input("DFA - Signal fractal scaling exponent")
 
         with col1:
-            MDVP_Shimmer_dB = st.text_input('MDVP:Shimmer (dB)')
+            spread1 = st.text_input("Spread1 - Nonlinear measures of fundamental frequency")
 
         with col2:
-            Shimmer_APQ3 = st.text_input('Shimmer:APQ3')
+            spread2 = st.text_input("Spread2 - Nonlinear measures of fundamental frequency")
 
         with col3:
-            Shimmer_APQ5 = st.text_input('Shimmer:APQ5')
+            D2 = st.text_input("D2 - Dynamical complexity measures")
 
         with col1:
-            MDVP_APQ = st.text_input('MDVP:APQ')
-
-        with col2:
-            Shimmer_DDA = st.text_input('Shimmer:DDA')
-
-        with col3:
-            NHR = st.text_input('NHR')
-
-        with col1:
-            HNR = st.text_input('HNR')
-
-        with col2:
-            RPDE = st.text_input('RPDE')
-
-        with col3:
-            DFA = st.text_input('DFA')
-
-        with col1:
-            spread1 = st.text_input('Spread1')
-
-        with col2:
-            spread2 = st.text_input('Spread2')
-
-        with col3:
-            D2 = st.text_input('D2')
-
-        with col1:
-            PPE = st.text_input('PPE')
+            PPE = st.text_input("PPE - Pitch period entropy")
 
         # Prediction button
-        if st.button("Parkinson's Test Result"):
+        if st.button("Parkinson's Disease Test Result"):
             try:
-                user_input = [float(x) for x in [MDVP_Fo, MDVP_Fhi, MDVP_Flo, MDVP_Jitter_percent, MDVP_Jitter_Abs, MDVP_RAP, MDVP_PPQ, Jitter_DDP, MDVP_Shimmer, MDVP_Shimmer_dB, Shimmer_APQ3, Shimmer_APQ5, MDVP_APQ, Shimmer_DDA, NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE]]
+                user_input = [float(x) for x in [MDVP_Fo, MDVP_Fhi, MDVP_Flo, MDVP_Jitter, MDVP_Shimmer, NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE]]
                 parkinsons_prediction = parkinsons_model.predict([user_input])
 
-                if parkinsons_prediction[0] == 1:
-                    st.success("The person has Parkinson's disease")
-                else:
-                    st.success("The person does not have Parkinson's disease")
+                result = 'Positive' if parkinsons_prediction[0] == 1 else 'Negative'
+                st.success(f'The person is {result} for Parkinson\'s disease.')
+
+                # Display result in a table
+                result_df = pd.DataFrame({
+                    'Feature': ['MDVP:Fo', 'MDVP:Fhi', 'MDVP:Flo', 'MDVP:Jitter', 'MDVP:Shimmer', 'NHR', 'HNR', 'RPDE', 'DFA', 'Spread1', 'Spread2', 'D2', 'PPE'],
+                    'Value': user_input,
+                    'Prediction': [result] * len(user_input)
+                })
+                display_and_download_predictions(result_df)
             except ValueError:
                 st.error("Please provide valid numerical inputs.")
 
     elif prediction_type == 'Batch Prediction':
-        required_columns = ['MDVP:Fo (Hz)', 'MDVP:Fhi (Hz)', 'MDVP:Flo (Hz)', 'MDVP:Jitter (%)', 'MDVP:Jitter (Abs)', 'MDVP:RAP', 'MDVP:PPQ', 'Jitter:DDP', 'MDVP:Shimmer', 'MDVP:Shimmer (dB)', 'Shimmer:APQ3', 'Shimmer:APQ5', 'MDVP:APQ', 'Shimmer:DDA', 'NHR', 'HNR', 'RPDE', 'DFA', 'Spread1', 'Spread2', 'D2', 'PPE']
-        download_template(required_columns, "Parkinson's Prediction")
+        required_columns = ['MDVP:Fo', 'MDVP:Fhi', 'MDVP:Flo', 'MDVP:Jitter', 'MDVP:Shimmer', 'NHR', 'HNR', 'RPDE', 'DFA', 'Spread1', 'Spread2', 'D2', 'PPE']
+        download_template(required_columns, "Parkinson's Disease Prediction")
 
         uploaded_file = st.file_uploader("Upload a CSV file for batch prediction", type=['csv'])
 
@@ -309,8 +305,7 @@ if selected == 'Parkinsons Prediction':
                 if all(col in data.columns for col in required_columns):
                     predictions = batch_predict(parkinsons_model, data[required_columns])
                     data['Prediction'] = predictions
-                    st.write("Predictions:", data)
-                    st.download_button("Download Predictions", data.to_csv(index=False), "predictions.csv", "text/csv")
+                    display_and_download_predictions(data)
                 else:
                     st.error(f"CSV file must contain the following columns: {', '.join(required_columns)}")
             except Exception as e:
