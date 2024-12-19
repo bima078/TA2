@@ -54,7 +54,9 @@ def display_and_download_predictions(data, predictions_column="Prediction"):
 # Diabetes Prediction Page
 if selected == 'Diabetes Prediction':
     st.title('Diabetes Prediction using SVM Method')
-
+    st.write("Accuracy Model Untuk Data Training : 78% ")
+    st.write("Accuracy Model Untuk Data Uji : 77% ")
+  
     # Download training data
     download_training_data(f'{working_dir}/dataset/diabetes.csv', 'Diabetes Training Data')
 
