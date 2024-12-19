@@ -145,7 +145,7 @@ if selected == 'Heart Disease Prediction':
             age = st.text_input('Age', placeholder='Years old')
 
         with col2:
-            sex = st.text_input('Sex', placeholders="Enter Value (0-1)")
+            sex = st.text_input('Sex', placeholder="Enter Value (0-1)")
             st.caption("""
             - **0**: Female  
             - **1**: Male 
@@ -167,14 +167,14 @@ if selected == 'Heart Disease Prediction':
             chol = st.text_input('Serum Cholestoral', placeholder="Enter value (mg/dl)")
 
         with col3:
-            fbs = st.text_input('Fasting Blood Sugar', placeholders="Enter Value (0-1)")
+            fbs = st.text_input('Fasting Blood Sugar', placeholder="Enter Value (0-1)")
             st.caption("""
               - **0**: Blood sugar level <= 120 mg/dl  
               - **1**: Blood Sugar Level > 120 mg/dl
               """)
 
         with col1:
-            restecg = st.text_input('Resting Electrocardiographic results', placeholders="Enter Value (0-2)")
+            restecg = st.text_input('Resting Electrocardiographic results', placeholder="Enter Value (0-2)")
             st.caption("""
             - **0**: Normal  
             - **1**: ST-T wave abnormality  
