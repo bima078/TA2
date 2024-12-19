@@ -261,7 +261,7 @@ if selected == 'Parkinsons Prediction':
     st.title("Parkinson's Disease Prediction using SVM Method")
     st.write("Accuracy Model Untuk Data Training : **87%** ")
     st.write("Accuracy Model Untuk Data Uji : **87%** ")
-  
+
     # Download training data
     download_training_data(f'{working_dir}/dataset/parkinsons.csv', "Parkinson's Training Data")
 
@@ -269,64 +269,98 @@ if selected == 'Parkinsons Prediction':
     prediction_type = st.radio("Select Prediction Type", ('Single Prediction', 'Batch Prediction'))
 
     if prediction_type == 'Single Prediction':
-        col1, col2, col3 = st.columns(3)
+        col1, col2, col3, col4, col5 = st.columns(5)
 
         with col1:
-            MDVP_Fo = st.text_input("MDVP Fo(Hz)", placeholder="Average vocal fundamental frequency")
+            fo = st.text_input('MDVP:Fo(Hz)')
 
         with col2:
-            MDVP_Fhi = st.text_input("MDVP Fhi(Hz)", placeholder="Maximum vocal fundamental frequency")
+            fhi = st.text_input('MDVP:Fhi(Hz)')
 
         with col3:
-            MDVP_Flo = st.text_input("MDVP Flo(Hz)", placeholder="Minimum vocal fundamental frequency")
+            flo = st.text_input('MDVP:Flo(Hz)')
+
+        with col4:
+            Jitter_percent = st.text_input('MDVP:Jitter(%)')
+
+        with col5:
+            Jitter_Abs = st.text_input('MDVP:Jitter(Abs)')
 
         with col1:
-            MDVP_Jitter = st.text_input("MDVP Jitter", placeholder="Input Value Here (%)")
+            RAP = st.text_input('MDVP:RAP')
 
         with col2:
-            MDVP_Shimmer = st.text_input("MDVP Shimmer", placeholder="Input Value Here")
+            PPQ = st.text_input('MDVP:PPQ')
 
         with col3:
-            NHR = st.text_input("NHR", placeholder="Noise-to-Harmonics ratio")
+            DDP = st.text_input('Jitter:DDP')
+
+        with col4:
+            Shimmer = st.text_input('MDVP:Shimmer')
+
+        with col5:
+            Shimmer_dB = st.text_input('MDVP:Shimmer(dB)')
 
         with col1:
-            HNR = st.text_input("HNR", placeholder="Harmonics-to-Noise ratio")
+            APQ3 = st.text_input('Shimmer:APQ3')
 
         with col2:
-            RPDE = st.text_input("RPDE", placeholder="Recurrence period density entropy")
+            APQ5 = st.text_input('Shimmer:APQ5')
 
         with col3:
-            DFA = st.text_input("DFA", placeholder="Signal fractal scaling exponent")
+            APQ = st.text_input('MDVP:APQ')
+
+        with col4:
+            DDA = st.text_input('Shimmer:DDA')
+
+        with col5:
+            NHR = st.text_input('NHR')
 
         with col1:
-            spread1 = st.text_input("Spread1", placeholder="Nonlinear measures of fundamental frequency")
+            HNR = st.text_input('HNR')
 
         with col2:
-            spread2 = st.text_input("Spread2", placeholder="Nonlinear measures of fundamental frequency")
+            RPDE = st.text_input('RPDE')
 
         with col3:
-            D2 = st.text_input("D2", placeholder="Dynamical complexity measures")
+            DFA = st.text_input('DFA')
+
+        with col4:
+            spread1 = st.text_input('spread1')
+
+        with col5:
+            spread2 = st.text_input('spread2')
 
         with col1:
-            PPE = st.text_input("PPE", placeholder="Pitch period entropy")
+            D2 = st.text_input('D2')
+
+        with col2:
+            PPE = st.text_input('PPE')
 
         # Prediction button
         if st.button("Parkinson's Disease Test Result"):
             try:
-                user_input = [float(x) for x in [MDVP_Fo, MDVP_Fhi, MDVP_Flo, MDVP_Jitter, MDVP_Shimmer, NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE]]
+                user_input = [float(x) for x in [fo, fhi, flo, Jitter_percent, Jitter_Abs,
+                      RAP, PPQ, DDP,Shimmer, Shimmer_dB, APQ3, APQ5,
+                      APQ, DDA, NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE]]
                 parkinsons_prediction = parkinsons_model.predict([user_input])
 
                 result = 'Positive' if parkinsons_prediction[0] == 1 else 'Negative'
                 st.success(f'The person is {result} for Parkinson\'s disease.')
 
                 # Display result in a single-row table
-                result_df = pd.DataFrame([user_input + [result]], columns=['MDVP:Fo', 'MDVP:Fhi', 'MDVP:Flo', 'MDVP:Jitter', 'MDVP:Shimmer', 'NHR', 'HNR', 'RPDE', 'DFA', 'Spread1', 'Spread2', 'D2', 'PPE', 'Prediction'])
+                result_df = pd.DataFrame([user_input + [result]], columns=['MDVP:Fo(Hz)', 'MDVP:Fhi(Hz)', 'MDVP:Flo(Hz)', 'MDVP:Jitter(%)', 'MDVP:Jitter(Abs)',
+                      'MDVP:RAP', 'MDVP:PPQ', 'Jitter:DDP', 'MDVP:Shimmer', 'MDVP:Shimmer(dB)', 'Shimmer:APQ3', 'Shimmer:APQ5',
+                      'MDVP:APQ', 'Shimmer:DDA', 'NHR', 'HNR', 'RPDE', 'DFA', 'spread1', 'spread2', 'D2', 'PPE', 'Prediction'])
                 st.dataframe(result_df)
             except ValueError:
                 st.error("Please provide valid numerical inputs.")
 
     elif prediction_type == 'Batch Prediction':
-        required_columns = ['MDVP:Fo', 'MDVP:Fhi', 'MDVP:Flo', 'MDVP:Jitter', 'MDVP:Shimmer', 'NHR', 'HNR', 'RPDE', 'DFA', 'Spread1', 'Spread2', 'D2', 'PPE']
+        required_columns = ['MDVP:Fo(Hz)', 'MDVP:Fhi(Hz)', 'MDVP:Flo(Hz)', 'MDVP:Jitter(%)', 'MDVP:Jitter(Abs)',
+                            'MDVP:RAP', 'MDVP:PPQ', 'Jitter:DDP', 'MDVP:Shimmer', 'MDVP:Shimmer(dB)',
+                            'Shimmer:APQ3', 'Shimmer:APQ5', 'MDVP:APQ', 'Shimmer:DDA', 'NHR', 'HNR', 'RPDE',
+                            'DFA', 'spread1', 'spread2', 'D2', 'PPE']
         download_template(required_columns, "Parkinson's Disease Prediction")
 
         uploaded_file = st.file_uploader("Upload a CSV file for batch prediction", type=['csv'])
