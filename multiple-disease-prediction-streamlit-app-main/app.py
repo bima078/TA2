@@ -182,22 +182,36 @@ if selected == 'Heart Disease Prediction':
             """)
           
         with col2:
-            thalach = st.text_input('Maximum Heart Rate achieved')
+            thalach = st.text_input('Maximum Heart Rate achieved', placeholder="Enter Value (bpm)")
 
         with col3:
-            exang = st.text_input('Exercise Induced Angina')
-
+            exang = st.text_input('Exercise Induced Angina', placeholder="Enter Value (0-1)")
+            st.caption("""
+              - **0**: No Chest pain when doing exercise  
+              - **1**: Had Chest pain when doing exercise  
+              """)
+          
         with col1:
-            oldpeak = st.text_input('ST depression induced by exercise')
+            oldpeak = st.text_input('ST depression induced by exercise', placeholder="Enter Value")
 
         with col2:
-            slope = st.text_input('Slope of the peak exercise ST segment')
-
+            slope = st.text_input('Slope of the peak exercise ST segment', placeholder="Enter Value (1-3)")
+            st.caption("""
+              - **1**: Upsloping  
+              - **2**: Flat 
+              - **3**: Downsloping 
+              """)
+          
         with col3:
-            ca = st.text_input('Major vessels colored by flourosopy')
+            ca = st.text_input('Major vessels colored by flourosopy', placeholder="Enter Value")
 
         with col1:
-            thal = st.text_input('thal: 0 = normal; 1 = fixed defect; 2 = reversable defect')
+            thal = st.text_input('thal', placeholder="Enter Value (0-2)")
+            st.caption("""
+                - **0**: Normal  
+                - **1**: Fixed Defect 
+                - **2**: Reversal Defect
+                """)
 
         # Prediction button
         if st.button('Heart Disease Test Result'):
@@ -251,43 +265,43 @@ if selected == 'Parkinsons Prediction':
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            MDVP_Fo = st.text_input("MDVP:Fo(Hz) - Average vocal fundamental frequency")
+            MDVP_Fo = st.text_input("MDVP:Fo(Hz)", placeholder="Average vocal fundamental frequency")
 
         with col2:
-            MDVP_Fhi = st.text_input("MDVP:Fhi(Hz) - Maximum vocal fundamental frequency")
+            MDVP_Fhi = st.text_input("MDVP:Fhi(Hz)", placeholder="Maximum vocal fundamental frequency")
 
         with col3:
-            MDVP_Flo = st.text_input("MDVP:Flo(Hz) - Minimum vocal fundamental frequency")
+            MDVP_Flo = st.text_input("MDVP:Flo(Hz)", placeholder="Minimum vocal fundamental frequency")
 
         with col1:
-            MDVP_Jitter = st.text_input("MDVP:Jitter(%)")
+            MDVP_Jitter = st.text_input("MDVP:Jitter", placeholder="Input Value Here (%)")
 
         with col2:
-            MDVP_Shimmer = st.text_input("MDVP:Shimmer")
+            MDVP_Shimmer = st.text_input("MDVP:Shimmer", placeholder="Input Value Here")
 
         with col3:
-            NHR = st.text_input("NHR - Noise-to-Harmonics ratio")
+            NHR = st.text_input("NHR", placeholder="Noise-to-Harmonics ratio")
 
         with col1:
-            HNR = st.text_input("HNR - Harmonics-to-Noise ratio")
+            HNR = st.text_input("HNR", placeholder="Harmonics-to-Noise ratio")
 
         with col2:
-            RPDE = st.text_input("RPDE - Recurrence period density entropy")
+            RPDE = st.text_input("RPDE", placeholder="Recurrence period density entropy")
 
         with col3:
-            DFA = st.text_input("DFA - Signal fractal scaling exponent")
+            DFA = st.text_input("DFA", placeholder="Signal fractal scaling exponent")
 
         with col1:
-            spread1 = st.text_input("Spread1 - Nonlinear measures of fundamental frequency")
+            spread1 = st.text_input("Spread1", placeholder="Nonlinear measures of fundamental frequency")
 
         with col2:
-            spread2 = st.text_input("Spread2 - Nonlinear measures of fundamental frequency")
+            spread2 = st.text_input("Spread2", placeholder="Nonlinear measures of fundamental frequency")
 
         with col3:
-            D2 = st.text_input("D2 - Dynamical complexity measures")
+            D2 = st.text_input("D2", placeholder="Dynamical complexity measures")
 
         with col1:
-            PPE = st.text_input("PPE - Pitch period entropy")
+            PPE = st.text_input("PPE", placeholder="Pitch period entropy")
 
         # Prediction button
         if st.button("Parkinson's Disease Test Result"):
