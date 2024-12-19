@@ -139,7 +139,7 @@ if selected == 'Heart Disease Prediction':
     prediction_type = st.radio("Select Prediction Type", ('Single Prediction', 'Batch Prediction'))
 
     if prediction_type == 'Single Prediction':
-        col1, col2, col3 = st.columns(3)
+        col1, col2, col3 = st.columns([1, 1, 1], gap="medium")
 
         with col1:
             age = st.text_input('Age', placeholder='Years old')
