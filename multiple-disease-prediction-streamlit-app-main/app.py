@@ -47,7 +47,8 @@ def download_training_data(file_path, display_name):
 
 # Function to display and download predictions
 def display_and_download_predictions(data, predictions_column="Prediction"):
-    st.write("Predictions:", data)
+    st.write("Predictions:")
+    st.dataframe(data)
     st.download_button("Download Predictions", data.to_csv(index=False), "predictions.csv", "text/csv")
 
 # Diabetes Prediction Page
@@ -99,10 +100,10 @@ if selected == 'Diabetes Prediction':
                 # Display result in a table
                 result_df = pd.DataFrame({
                     'Feature': ['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age'],
-                    'Value': user_input,
-                    'Prediction': [result] * len(user_input)
+                    'Value': user_input
                 })
-                display_and_download_predictions(result_df)
+                result_df['Prediction'] = result
+                st.dataframe(result_df)
             except ValueError:
                 st.error("Please provide valid numerical inputs.")
 
@@ -191,10 +192,10 @@ if selected == 'Heart Disease Prediction':
                 # Display result in a table
                 result_df = pd.DataFrame({
                     'Feature': ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal'],
-                    'Value': user_input,
-                    'Prediction': [result] * len(user_input)
+                    'Value': user_input
                 })
-                display_and_download_predictions(result_df)
+                result_df['Prediction'] = result
+                st.dataframe(result_df)
             except ValueError:
                 st.error("Please provide valid numerical inputs.")
 
@@ -283,10 +284,10 @@ if selected == 'Parkinsons Prediction':
                 # Display result in a table
                 result_df = pd.DataFrame({
                     'Feature': ['MDVP:Fo', 'MDVP:Fhi', 'MDVP:Flo', 'MDVP:Jitter', 'MDVP:Shimmer', 'NHR', 'HNR', 'RPDE', 'DFA', 'Spread1', 'Spread2', 'D2', 'PPE'],
-                    'Value': user_input,
-                    'Prediction': [result] * len(user_input)
+                    'Value': user_input
                 })
-                display_and_download_predictions(result_df)
+                result_df['Prediction'] = result
+                st.dataframe(result_df)
             except ValueError:
                 st.error("Please provide valid numerical inputs.")
 
