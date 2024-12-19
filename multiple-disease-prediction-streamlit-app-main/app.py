@@ -128,7 +128,7 @@ if selected == 'Diabetes Prediction':
 
 # Heart Disease Prediction Page
 if selected == 'Heart Disease Prediction':
-    st.title('Heart Disease Prediction using SVM Method')
+    st.title('Heart Disease Prediction using Linear Regression Method')
     st.write("Accuracy Model Untuk Data Training : **85%** ")
     st.write("Accuracy Model Untuk Data Uji : **82%** ")
 
