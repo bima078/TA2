@@ -70,25 +70,25 @@ if selected == 'Diabetes Prediction':
             Pregnancies = st.text_input('Number of Pregnancies', placeholder='Enter number of pregnancies here')
 
         with col2:
-            Glucose = st.text_input('Glucose Level')
+            Glucose = st.text_input('Glucose Level', placeholder='mg/dL')
 
         with col3:
-            BloodPressure = st.text_input('Blood Pressure value')
+            BloodPressure = st.text_input('Blood Pressure value', placeholder='mm Hg')
 
         with col1:
-            SkinThickness = st.text_input('Skin Thickness value')
+            SkinThickness = st.text_input('Skin Thickness value', placeholder='mm')
 
         with col2:
-            Insulin = st.text_input('Insulin Level')
+            Insulin = st.text_input('Insulin Level', placeholder='µU/ml')
 
         with col3:
-            BMI = st.text_input('BMI value')
+            BMI = st.text_input('BMI value', placeholder='kg/m^2')
 
         with col1:
-            DiabetesPedigreeFunction = st.text_input('Diabetes Pedigree Function value')
+            DiabetesPedigreeFunction = st.text_input('Diabetes Pedigree Function value', placeholder='Input Here')
 
         with col2:
-            Age = st.text_input('Age of the Person')
+            Age = st.text_input('Age of the Person', placeholder='years old')
 
         # Prediction button
         if st.button('Diabetes Test Result'):
@@ -129,6 +129,8 @@ if selected == 'Diabetes Prediction':
 # Heart Disease Prediction Page
 if selected == 'Heart Disease Prediction':
     st.title('Heart Disease Prediction using SVM Method')
+    st.write("Accuracy Model Untuk Data Training : **85%** ")
+    st.write("Accuracy Model Untuk Data Uji : **82%** ")
 
     # Download training data
     download_training_data(f'{working_dir}/dataset/heart.csv', 'Heart Disease Training Data')
@@ -140,26 +142,45 @@ if selected == 'Heart Disease Prediction':
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            age = st.text_input('Age')
+            age = st.text_input('Age', placeholder='Years old')
 
         with col2:
-            sex = st.text_input('Sex')
+            sex = st.text_input('Sex', placeholders="Enter Value (0-1)")
+            st.caption("""
+            - **0**: Female  
+            - **1**: Male 
+            """)
 
         with col3:
-            cp = st.text_input('Chest Pain types')
+            cp = st.text_input('Chest Pain types', placeholder="Enter value (1-4)")
+            st.caption("""
+            - **1**: Typical angina  
+            - **2**: Atypical angina  
+            - **3**: Non-anginal pain  
+            - **4**: Asymptomatic
+            """)
 
         with col1:
-            trestbps = st.text_input('Resting Blood Pressure')
+            trestbps = st.text_input('Resting Blood Pressure', placeholder="Enter value (mm Hg)")
 
         with col2:
-            chol = st.text_input('Serum Cholestoral in mg/dl')
+            chol = st.text_input('Serum Cholestoral', placeholder="Enter value (mg/dl)")
 
         with col3:
-            fbs = st.text_input('Fasting Blood Sugar > 120 mg/dl')
+            fbs = st.text_input('Fasting Blood Sugar', placeholders="Enter Value (0-1)")
+            st.caption("""
+              - **0**: Blood sugar level <= 120 mg/dl  
+              - **1**: Blood Sugar Level > 120 mg/dl
+              """)
 
         with col1:
-            restecg = st.text_input('Resting Electrocardiographic results')
-
+            restecg = st.text_input('Resting Electrocardiographic results', placeholders="Enter Value (0-2)")
+            st.caption("""
+            - **0**: Normal  
+            - **1**: ST-T wave abnormality  
+            - **2**: Hipertropi in left ventricular
+            """)
+          
         with col2:
             thalach = st.text_input('Maximum Heart Rate achieved')
 
@@ -217,7 +238,9 @@ if selected == 'Heart Disease Prediction':
 # Parkinson's Disease Prediction Page
 if selected == 'Parkinsons Prediction':
     st.title("Parkinson's Disease Prediction using SVM Method")
-
+    st.write("Accuracy Model Untuk Data Training : **87%** ")
+    st.write("Accuracy Model Untuk Data Uji : **87%** ")
+  
     # Download training data
     download_training_data(f'{working_dir}/dataset/parkinsons.csv', "Parkinson's Training Data")
 
