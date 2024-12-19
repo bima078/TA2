@@ -272,19 +272,19 @@ if selected == 'Parkinsons Prediction':
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            MDVP_Fo = st.text_input("MDVP:Fo(Hz)", placeholder="Average vocal fundamental frequency")
+            MDVP_Fo = st.text_input("MDVP Fo(Hz)", placeholder="Average vocal fundamental frequency")
 
         with col2:
-            MDVP_Fhi = st.text_input("MDVP:Fhi(Hz)", placeholder="Maximum vocal fundamental frequency")
+            MDVP_Fhi = st.text_input("MDVP Fhi(Hz)", placeholder="Maximum vocal fundamental frequency")
 
         with col3:
-            MDVP_Flo = st.text_input("MDVP:Flo(Hz)", placeholder="Minimum vocal fundamental frequency")
+            MDVP_Flo = st.text_input("MDVP Flo(Hz)", placeholder="Minimum vocal fundamental frequency")
 
         with col1:
-            MDVP_Jitter = st.text_input("MDVP:Jitter", placeholder="Input Value Here (%)")
+            MDVP_Jitter = st.text_input("MDVP Jitter", placeholder="Input Value Here (%)")
 
         with col2:
-            MDVP_Shimmer = st.text_input("MDVP:Shimmer", placeholder="Input Value Here")
+            MDVP_Shimmer = st.text_input("MDVP Shimmer", placeholder="Input Value Here")
 
         with col3:
             NHR = st.text_input("NHR", placeholder="Noise-to-Harmonics ratio")
