@@ -97,12 +97,8 @@ if selected == 'Diabetes Prediction':
                 result = 'Positive' if diab_prediction[0] == 1 else 'Negative'
                 st.success(f'The person is {result} for diabetes.')
 
-                # Display result in a table
-                result_df = pd.DataFrame({
-                    'Feature': ['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age'],
-                    'Value': user_input
-                })
-                result_df['Prediction'] = result
+                # Display result in a single-row table
+                result_df = pd.DataFrame([user_input + [result]], columns=['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age', 'Prediction'])
                 st.dataframe(result_df)
             except ValueError:
                 st.error("Please provide valid numerical inputs.")
@@ -189,12 +185,8 @@ if selected == 'Heart Disease Prediction':
                 result = 'Positive' if heart_prediction[0] == 1 else 'Negative'
                 st.success(f'The person is {result} for heart disease.')
 
-                # Display result in a table
-                result_df = pd.DataFrame({
-                    'Feature': ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal'],
-                    'Value': user_input
-                })
-                result_df['Prediction'] = result
+                # Display result in a single-row table
+                result_df = pd.DataFrame([user_input + [result]], columns=['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal', 'Prediction'])
                 st.dataframe(result_df)
             except ValueError:
                 st.error("Please provide valid numerical inputs.")
@@ -281,12 +273,8 @@ if selected == 'Parkinsons Prediction':
                 result = 'Positive' if parkinsons_prediction[0] == 1 else 'Negative'
                 st.success(f'The person is {result} for Parkinson\'s disease.')
 
-                # Display result in a table
-                result_df = pd.DataFrame({
-                    'Feature': ['MDVP:Fo', 'MDVP:Fhi', 'MDVP:Flo', 'MDVP:Jitter', 'MDVP:Shimmer', 'NHR', 'HNR', 'RPDE', 'DFA', 'Spread1', 'Spread2', 'D2', 'PPE'],
-                    'Value': user_input
-                })
-                result_df['Prediction'] = result
+                # Display result in a single-row table
+                result_df = pd.DataFrame([user_input + [result]], columns=['MDVP:Fo', 'MDVP:Fhi', 'MDVP:Flo', 'MDVP:Jitter', 'MDVP:Shimmer', 'NHR', 'HNR', 'RPDE', 'DFA', 'Spread1', 'Spread2', 'D2', 'PPE', 'Prediction'])
                 st.dataframe(result_df)
             except ValueError:
                 st.error("Please provide valid numerical inputs.")
