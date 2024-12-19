@@ -139,7 +139,7 @@ if selected == 'Heart Disease Prediction':
     prediction_type = st.radio("Select Prediction Type", ('Single Prediction', 'Batch Prediction'))
 
     if prediction_type == 'Single Prediction':
-        col1, col2, col3 = st.columns([1, 1, 1], gap="medium")
+        col1, col2, col3 = st.columns([1, 1, 1])
 
         with col1:
             age = st.text_input('Age', placeholder='Years old')
@@ -180,7 +180,7 @@ if selected == 'Heart Disease Prediction':
             - **1**: ST-T wave abnormality  
             - **2**: Hipertropi in left ventricular
             """)
-          
+
         with col2:
             thalach = st.text_input('Maximum Heart Rate achieved', placeholder="Enter Value (bpm)")
 
@@ -190,7 +190,7 @@ if selected == 'Heart Disease Prediction':
               - **0**: No Chest pain when doing exercise  
               - **1**: Had Chest pain when doing exercise  
               """)
-          
+
         with col1:
             oldpeak = st.text_input('ST depression induced by exercise', placeholder="Enter Value")
 
@@ -201,7 +201,7 @@ if selected == 'Heart Disease Prediction':
               - **2**: Flat 
               - **3**: Downsloping 
               """)
-          
+
         with col3:
             ca = st.text_input('Major vessels colored by flourosopy', placeholder="Enter Value")
 
@@ -212,6 +212,13 @@ if selected == 'Heart Disease Prediction':
                 - **1**: Fixed Defect 
                 - **2**: Reversal Defect
                 """)
+
+        # Adjust layout alignment by adding empty captions where necessary
+        with col2:
+            st.caption("")
+
+        with col3:
+            st.caption("")
 
         # Prediction button
         if st.button('Heart Disease Test Result'):
